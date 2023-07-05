@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "chat_api"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 httpx = "^0.24.1"
 asyncio = "^3.4.3"
 cashu = "^0.12.0"
