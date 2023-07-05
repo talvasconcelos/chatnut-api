@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "chat-api"
+version = "0.1.0"
+description = ""
+authors = ["Tiago Vasconcelos <talvasconcelos@gmail.com>"]
+readme = "README.md"
+packages = [{include = "chat_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpx = "^0.24.1"
+asyncio = "^3.4.3"
+cashu = "^0.12.0"
+fastapi = "^0.83.0"
+uvicorn = {version = "^0.18.3", extras = ["standard"]}
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
