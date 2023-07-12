@@ -17,6 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 class Settings(BaseSettings):
     MINT_URL: str
     MODEL_URL: str
+    COST_PER_CALL: int = 1
 
     class Config:
         env_file = ".env"
@@ -30,6 +31,7 @@ request_queue = asyncio.Queue()
 wallet = None
 mint_url = settings.MINT_URL
 model_url = settings.MODEL_URL
+cost = settings.COST_PER_CALL
 
 
 class EcashHeaderMiddleware(BaseHTTPMiddleware):
@@ -57,6 +59,9 @@ class EcashHeaderMiddleware(BaseHTTPMiddleware):
                     status_code=402,
                 )
             tokenObj = await deserialize_token_from_string(token + "=")
+            amount = tokenObj.get_amount()
+            if amount < cost:
+                return JSONResponse({"detail": "Invalid amount"}, status_code=402)
             proofs = tokenObj.get_proofs()
             
             try:
@@ -169,7 +174,7 @@ async def process_requests():
 
             # Send the request to the external API
             try:
-                response = await client.post("/api/v1/generate", timeout=180, json=request_item.data)
+                response = await client.post("/api/v1/generate", timeout=None, json=request_item.data)
                 response_data = response.json()
 
                 # Create a ResponseItem and add it to the list
