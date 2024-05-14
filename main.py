@@ -70,17 +70,18 @@ class EcashHeaderMiddleware(BaseHTTPMiddleware):
                 )
             # print(f"TOKEN: {token}")
             
-            tokenObj = await deserialize_token_from_string(token)
-            # print(f"TOKEN OBJ: {tokenObj}")
+            tokenObj = deserialize_token_from_string(token)
+            print(f"TOKEN OBJ: {tokenObj}")
             amount = tokenObj.get_amount()
-            # print(f"AMOUNT: {amount}")
+            print(f"AMOUNT: {amount}")
             if amount < cost:
                 return JSONResponse({"detail": "Invalid amount"}, status_code=402)
             proofs = tokenObj.get_proofs()
-            # print(f"PROOFS: {proofs}")
+            print(f"PROOFS: {proofs}")
             try:
                 await wallet.redeem(proofs)
             except Exception as e:
+                print(f"ERROR: {str(e)}")
                 return JSONResponse({"detail": str(e)}, status_code=402)
 
         response = await call_next(request)
