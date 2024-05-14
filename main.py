@@ -70,7 +70,7 @@ class EcashHeaderMiddleware(BaseHTTPMiddleware):
                 )
             # print(f"TOKEN: {token}")
             
-            tokenObj = await deserialize_token_from_string(token + "=")
+            tokenObj = await deserialize_token_from_string(token)
             # print(f"TOKEN OBJ: {tokenObj}")
             amount = tokenObj.get_amount()
             # print(f"AMOUNT: {amount}")
